@@ -8,12 +8,16 @@ import {
 
 import { initLogin } from "./pages/login/login.js"
 import {initEvents } from "./pages/events/events.js"
+import {initEventAttendees} from "./pages/e-attendees/e-attendees.js"
+import {initAttendees} from "./pages/attendees/attendees.js"
 
 window.addEventListener("load", async () => {
 
   const templateNotFound = await loadHtml("./pages/notFound/notFound.html")
   const templateLogin = await loadHtml("./pages/login/login.html")
   const templateEvents = await loadHtml("./pages/events/events.html")
+  const templateEventAttendees = await loadHtml("./pages/e-attendees/e-attendees.html")
+  const templateAttendees = await loadHtml("./pages/attendees/attendees.html")
 
   adjustForMissingHash()
 
@@ -38,6 +42,14 @@ window.addEventListener("load", async () => {
       "/events": () => {
         renderTemplate(templateEvents, "content")
         initEvents()
+      },
+      "/eventattendees": () => {
+        renderTemplate(templateEventAttendees, "content")
+        initEventAttendees()
+      },
+      "/attendees": () => {
+        renderTemplate(templateAttendees, "content")
+        initAttendees()
       },
     })
     .notFound(() => {

@@ -3,7 +3,7 @@ const URL = API_URL + "/events";
 import { sanitizeStringWithTableRows } from "../../utils.js";
 
 export async function initEvents() {
-    document.getElementById("error").innerText = "";
+  document.getElementById("error").innerText = "";
   document
     .getElementById("searchEventForm")
     .addEventListener("submit", function (event) {
@@ -55,7 +55,7 @@ async function showEventsTable() {
 }
 
 async function searchEvent() {
-    document.getElementById("error").innerText = "";
+  document.getElementById("error").innerText = "";
   try {
     const eventId = document.getElementById("searchEventId").value;
 
@@ -69,9 +69,8 @@ async function searchEvent() {
     const response = await fetch(URL + "/" + eventId, options);
 
     if (!response.ok) {
-        
-      } else {
-        const event = await response.json();
+    } else {
+      const event = await response.json();
 
       console.log(event);
 
