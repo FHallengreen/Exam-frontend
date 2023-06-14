@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #192441;
+}
+h1 {
+    color: #192441;
+}
+.card {
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+.card-body {
+    padding: 20px;
+}
+
+.form-group{
+    padding: 10px;
+}
+
+.col-lg-8,.col-lg-6,.col-lg-4 {
+    padding: 10px;
+}
+
+.nav-link i {
+    color: #7e76ea;
+  }
+
+  .btn {
+    color: white;
+    background-color: #7e76ea;
+    border-color: #7e76ea;
+  }
+
+  .btn:hover{
+    background-color: #625cb6;
+    border-color: #625cb6;
+  }
+
+.row{
+    justify-content: center;
+}
