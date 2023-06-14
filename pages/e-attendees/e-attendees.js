@@ -76,7 +76,7 @@ async function fetchAttendees() {
     const attendees = await response.json();
 
     const userSelect = document.getElementById("userSelect");
-
+        console.log(attendees)
     attendees.forEach((attendee) => {
       const option = document.createElement("option");
       option.value = attendee.username;

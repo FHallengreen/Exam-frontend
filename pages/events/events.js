@@ -7,13 +7,15 @@ import { validateToken } from "../login/auth.js";
 const token = localStorage.getItem("token");
 
 export async function initEvents() {
+  document.getElementById("message").innerText = "";
+  document.getElementById("error").innerText = "";
+
   const isLoggedIn = await validateToken();
   if (!isLoggedIn) {
     // Redirect or handle the case when the token is invalid
     window.router.navigate("/");
     return;
-}
-  document.getElementById("error").innerText = "";
+  }
   document
     .getElementById("searchEventForm")
     .addEventListener("submit", function (event) {
@@ -21,6 +23,9 @@ export async function initEvents() {
       searchEvent();
     });
   showEventsTable();
+
+  document.getElementById('deleteEventButton').addEventListener('click', deleteEvent)
+  document.getElementById('createEventForm').addEventListener('submit', createEvent);
 
   document
     .getElementById("editEventForm")
@@ -63,6 +68,63 @@ async function showEventsTable() {
   }
 }
 
+async function createEvent(){
+
+  const newEventName = document.getElementById('newEventName').value;
+  const newEventDate = document.getElementById('newEventDate').value;
+  const newEventDescription = document.getElementById('newEventDescription').value;
+  const newEventCapacity = document.getElementById('newEventCapacity').value;
+
+  const event = {
+    name: newEventName,
+    date: newEventDate,
+    description: newEventDescription,
+    capacity: (newEventCapacity)
+};
+
+ try {
+  const response = await fetch(URL, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(event)
+  });
+
+  const data = await response.json();
+  console.log(data)
+
+} catch (error) {
+  console.error('Error:', error);
+}
+}
+
+async function deleteEvent(){
+  const eventId = document.getElementById('eventId').value;
+  
+  try {
+    const response = await fetch(URL + `/delete/${eventId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if(response.ok){
+      showEventsTable();
+      document.getElementById("message").innerText = "Event deleted";
+    }else{
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      document.getElementById("error").innerText = "Error: " + errorMessage;
+    }
+} catch (error) {
+    document.getElementById("error").innerText = "Error: " + error.message;
+}
+
+}
+
 async function searchEvent() {
   document.getElementById("error").innerText = "";
   try {
@@ -78,6 +140,9 @@ async function searchEvent() {
     const response = await fetch(URL + "/" + eventId, options);
 
     if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      document.getElementById("error").innerText = errorMessage;
     } else {
       const event = await response.json();
 
@@ -116,11 +181,11 @@ async function saveEvent() {
   };
 
   try {
-    const response = await fetch(`${URL}/${id}`, options);
+    const response = await fetch(URL +`/${id}`, options);
     if (response.ok) {
       showEventsTable();
       resetFields();
-      console.log("Event updated successfully");
+      document.getElementById("message").innerText = "Event updated";
     }
   } catch (error) {
     document.getElementById("error").innerText = error.message;

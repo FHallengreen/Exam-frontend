@@ -49,6 +49,7 @@ async function login(evt) {
     location.reload();
   } catch (err) {
     console.log(err.message);
+      document.getElementById("error").innerText = err.message;
   }
 }
 
