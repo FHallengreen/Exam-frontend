@@ -83,6 +83,10 @@ async function fetchAttendees() {
       option.text = attendee.username;
       userSelect.appendChild(option);
     });
+    const userRole = localStorage.getItem('roles');
+    if (userRole === 'USER') {
+      userSelect.disabled = true;
+    }
   } catch (error) {
     console.error("Error fetching available attendees:", error);
   }
