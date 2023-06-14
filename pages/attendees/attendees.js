@@ -1,9 +1,16 @@
 import { API_URL } from "../../settings.js";
 const URL = API_URL + "/attendees";
 import { sanitizeStringWithTableRows } from "../../utils.js";
+import { validateToken } from "../login/auth.js";
+const token = localStorage.getItem("token");
 
-export function initAttendees (){
-
+export async function initAttendees (){
+    const isLoggedIn = await validateToken();
+    if (!isLoggedIn) {
+      // Redirect or handle the case when the token is invalid
+      window.router.navigate("/");
+      return;
+  }
     showAttendeesTable();
 }
 
@@ -14,17 +21,20 @@ async function showAttendeesTable() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
-      const attendees = await fetch(URL, options).then((res) => res.json());
-      console.log(attendees)
-
+      const response  = await fetch(URL, options)
+      if (response.status === 403) {
+        window.router.navigate("/");
+        return;
+      }
+      const attendees = await response.json();
+    
       const tableRows = attendees
         .map(
           (attendee) => `
           <tr>
-              <td>${attendee.id}</td>
               <td>${attendee.username}</td>
               <td>${attendee.email}</td>
               <td>${attendee.phoneNumber}</td>

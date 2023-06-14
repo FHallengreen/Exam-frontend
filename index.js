@@ -1,10 +1,11 @@
 //import "https://unpkg.com/navigo"  //Will create the global Navigo object used below
 import "./navigo_EditedByLars.js"  //Will create the global Navigo, with a few changes, object used below
 //import "./navigo.min.js"  //Will create the global Navigo object used below
-
 import {
   setActiveLink, adjustForMissingHash, renderTemplate, loadHtml
 } from "./utils.js"
+import { updateRestrictedLinks } from "./pages/login/auth.js"
+import { validateToken } from "./pages/login/auth.js"
 
 import { initLogin } from "./pages/login/login.js"
 import {initEvents } from "./pages/events/events.js"
@@ -34,22 +35,32 @@ window.addEventListener("load", async () => {
     })
     .on({
       //For very simple "templates", you can just insert your HTML directly like below
-      "/": () => document.getElementById("content").innerHTML = "<h1>Welcome to Hallengreen Event Hub</h1>",
+      "/": () => {
+      document.getElementById("content").innerHTML = "<h1>Welcome to Hallengreen Event Hub</h1>",
+      updateRestrictedLinks();
+      if (localStorage.getItem("token") == null){
+        window.router.navigate("/login");
+      }
+      },
       "/login": (match) => {
         renderTemplate(templateLogin, "content")
         initLogin()
+        updateRestrictedLinks();
       },
       "/events": () => {
         renderTemplate(templateEvents, "content")
         initEvents()
+        updateRestrictedLinks();
       },
       "/eventattendees": () => {
         renderTemplate(templateEventAttendees, "content")
         initEventAttendees()
+        updateRestrictedLinks();
       },
       "/attendees": () => {
         renderTemplate(templateAttendees, "content")
         initAttendees()
+        updateRestrictedLinks();
       },
     })
     .notFound(() => {

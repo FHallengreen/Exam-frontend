@@ -1,43 +1,46 @@
 <div class="template">
-    <div class="col-lg-5">
-      <div class="card">
-        <div class="card-body">
-          <h3 class="card-title text-center">Login</h3>
-          <form>
-            <div class="form-group">
-              <label for="username"><b>Username</b></label>
-              <input
-                type="text"
-                placeholder="Enter Username"
-                id="username"
-                required
-                class="form-control"
-              />
-            </div>
-            <div class="form-group">
-              <label for="password"><b>Password</b></label>
-              <input
-                type="password"
-                placeholder="Enter Password"
-                id="password"
-                required
-                class="form-control"
-              />
-            </div>
-            <div class="form-group">
-              <button
-                style="width: 100%"
-                class="btn btn-dark mt-3"
-                id="loginBtn"
-              >
-                Login
-              </button>
-              <div id="loading"></div>
-              <p id="error" style="color: red"></p>
-            </div>
-          </form>
-        </div>
+  <div class="col-lg-5">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title text-center">Login</h3>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="username"><b>Username</b></label>
+            <input
+              type="text"
+              placeholder="Enter Username"
+              id="username"
+              required
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label for="password"><b>Password</b></label>
+            <input
+              type="password"
+              placeholder="Enter Password"
+              id="password"
+              required
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <button style="width: 100%" class="btn btn-dark mt-3" id="loginBtn">
+              Login
+            </button>
+            <button
+              style="width: 100%"
+              class="btn btn-danger mt-3"
+              id="logoutBtn"
+              style="display: none"
+            >
+              Logout
+            </button>
+            <div id="loading"></div>
+            <p id="error" style="color: red"></p>
+          </div>
+        </form>
       </div>
     </div>
   </div>
-  
+</div>

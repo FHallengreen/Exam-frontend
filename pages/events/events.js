@@ -1,8 +1,18 @@
 import { API_URL } from "../../settings.js";
 const URL = API_URL + "/events";
 import { sanitizeStringWithTableRows } from "../../utils.js";
+import { formatDate } from "../../utils.js";
+import { validateToken } from "../login/auth.js";
+
+const token = localStorage.getItem("token");
 
 export async function initEvents() {
+  const isLoggedIn = await validateToken();
+  if (!isLoggedIn) {
+    // Redirect or handle the case when the token is invalid
+    window.router.navigate("/");
+    return;
+}
   document.getElementById("error").innerText = "";
   document
     .getElementById("searchEventForm")
@@ -28,18 +38,17 @@ async function showEventsTable() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        // Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     };
     const events = await fetch(URL, options).then((res) => res.json());
-    console.log(events);
     const tableRows = events
       .map(
         (event) => `
         <tr>
             <td>${event.id}</td>
             <td>${event.name}</td>
-            <td>${event.date}</td>
+            <td>${formatDate(event.date)}</td>
             <td>${event.description}</td>
             </tr>`
       )
@@ -63,7 +72,7 @@ async function searchEvent() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        // Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     };
     const response = await fetch(URL + "/" + eventId, options);
@@ -71,8 +80,6 @@ async function searchEvent() {
     if (!response.ok) {
     } else {
       const event = await response.json();
-
-      console.log(event);
 
       document.getElementById("eventId").value = event.id;
       document.getElementById("eventName").value = event.name;
@@ -103,7 +110,7 @@ async function saveEvent() {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      // Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(event),
   };
