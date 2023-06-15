@@ -5,6 +5,8 @@ import { validateToken } from "../login/auth.js";
 
 const token = localStorage.getItem("token");
 
+let isListenerAdded = false;
+
 export async function initEventAttendees() {
     const isLoggedIn = await validateToken();
     if (!isLoggedIn) {
@@ -27,12 +29,13 @@ export async function initEventAttendees() {
     }
   });
 
-  document
-    .getElementById("addUserToEvent")
-    .addEventListener("submit", function (event) {
+  if (!isListenerAdded) {
+    document.getElementById("addUserToEvent").addEventListener("submit", function (event) {
       event.preventDefault();
       addAttendeeToEvent();
     });
+    isListenerAdded = true;
+  }
 }
 
 async function fetchAvailableEvents() {
@@ -50,7 +53,7 @@ async function fetchAvailableEvents() {
     const events = await response.json();
 
     const eventSelect = document.getElementById("eventSelect");
-
+    eventSelect.innerHTML = '';
     events.forEach((event) => {
       const option = document.createElement("option");
       option.value = event.id;
@@ -76,7 +79,7 @@ async function fetchAttendees() {
     const attendees = await response.json();
 
     const userSelect = document.getElementById("userSelect");
-        console.log(attendees)
+    userSelect.innerHTML = '';
     attendees.forEach((attendee) => {
       const option = document.createElement("option");
       option.value = attendee.username;

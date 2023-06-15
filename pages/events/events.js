@@ -25,7 +25,10 @@ export async function initEvents() {
   showEventsTable();
 
   document.getElementById('deleteEventButton').addEventListener('click', deleteEvent)
-  document.getElementById('createEventForm').addEventListener('submit', createEvent);
+  document.getElementById('createEventForm').addEventListener('submit', function(event){
+    event.preventDefault();
+    createEvent();
+});
 
   document
     .getElementById("editEventForm")
@@ -82,19 +85,26 @@ async function createEvent(){
     capacity: (newEventCapacity)
 };
 
- try {
+try {
   const response = await fetch(URL, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(event)
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(event)
   });
 
-  const data = await response.json();
-  console.log(data)
+  if(response.ok){
+    await response.json();
 
+    showEventsTable();
+    document.getElementById("message").innerText = "Event created successfully";
+  }else{
+    const errorData = await response.json();
+    const errorMessage = errorData.message;
+    document.getElementById("error").innerText = "Error: " + errorMessage;
+  }
 } catch (error) {
   console.error('Error:', error);
 }

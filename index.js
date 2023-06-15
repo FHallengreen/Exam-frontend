@@ -36,7 +36,10 @@ window.addEventListener("load", async () => {
     .on({
       //For very simple "templates", you can just insert your HTML directly like below
       "/": () => {
-      document.getElementById("content").innerHTML = "<h1>Welcome to Hallengreen Event Hub</h1>",
+        document.getElementById("content").innerHTML = `
+        <h1>Welcome to Hallengreen Event Hub</h1>
+        <img src="images/background.png" alt="Background Image" style="height: 50%">
+      `;
       updateRestrictedLinks();
       if (localStorage.getItem("token") == null){
         window.router.navigate("/login");

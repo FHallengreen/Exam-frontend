@@ -25,10 +25,7 @@ async function showAttendeesTable() {
         },
       };
       const response  = await fetch(URL, options)
-      if (response.status === 403) {
-        window.router.navigate("/");
-        return;
-      }
+     
       const attendees = await response.json();
     
       const tableRows = attendees
