@@ -39,18 +39,4 @@ export function updateRestrictedLinks() {
           role.includes("ADMIN") || role.includes("USER") ? "block" : "none";
       }
     });
-  
-    const anonymousLinks = document.querySelectorAll(".anonymous-link");
-    anonymousLinks.forEach((link) => {
-      if (link instanceof HTMLElement) {
-        link.style.display = role === "anonymous" ? "block" : "none";
-      }
-    });
-    
-    const loggedOutLinks = document.querySelectorAll(".logged-out-link");
-  loggedOutLinks.forEach((link) => {
-    if (link instanceof HTMLElement) {
-      link.style.display = role === "" ? "block" : "none";
-    }
-  });
   }
